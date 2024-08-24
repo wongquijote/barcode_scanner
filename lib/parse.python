@@ -1,10 +1,10 @@
 def parse_ids_and_names(input_string):
-    result = []
+    result = {}
     lines = input_string.split('\n')
     for line in lines:
         if '|' in line:
             id_str, name = line.split('|')[1], line.split('|')[2]
-            result.append((id_str.strip(), name.strip()))
+            result.update({id_str.strip(): name.strip()})
     return result
 
 input_data = """
