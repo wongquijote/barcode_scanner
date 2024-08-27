@@ -1,40 +1,39 @@
 import 'package:sqflite/sqflite.dart';
+import 'dart:io';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
+  static final DatabaseHelper _instance = DatabaseHelper._internal();
+  factory DatabaseHelper() => _instance;
+  DatabaseHelper._internal();
+
   static Database? _database;
-  static const String tableName = 'product';
 
   Future<Database> get database async {
     if (_database != null) return _database!;
-
-    // If _database is null we instantiate it
-    _database = await initDatabase();
+    _database = await _initDatabase();
     return _database!;
   }
 
-  Future<Database> initDatabase() async {
-    // Get a location using path_provider
-    String path = join(await getDatabasesPath(), 'smartcart_ws.db');
+  Future<Database> _initDatabase() async {
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = join(documentsDirectory.path, "smartcart_ws.db");
 
-    // Open/create the database at a given path
-    return await openDatabase(path, version: 1, onCreate: _createDatabase);
+    // Open the database
+    return await openDatabase(path);
   }
 
-  void _createDatabase(Database db, int version) async {
-    // You might not need to recreate tables if they already exist
-    // Example: await db.execute('CREATE TABLE IF NOT EXISTS your_table (id INTEGER PRIMARY KEY, name TEXT)');
-  }
-
-  Future<List<Map<String, dynamic>>> query(String sql) async {
+  // Query a specific item by ID
+  Future<Map<String, dynamic>?> queryItemById(String id) async {
     Database db = await database;
-    return await db.rawQuery(sql);
+    List<Map<String, dynamic>> results = await db.query(
+      'product',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    return results.isNotEmpty ? results.first : null;
   }
 
-  Future<int> insert(String table, Map<String, dynamic> data) async {
-    Database db = await database;
-    return await db.insert(table, data);
-  }
-
-  // Add more methods as needed (update, delete, etc.)
+  // Define your database methods here (CRUD operations)
 }
