@@ -26,8 +26,8 @@ Future<void> copyDatabase() async {
 }
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); 
-  await copyDatabase();
+  // WidgetsFlutterBinding.ensureInitialized(); 
+  // await copyDatabase();
   runApp(CameraApp());
 }
 
