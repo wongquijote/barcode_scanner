@@ -64,6 +64,7 @@ class CameraApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: BarcodeScannerScreen(), // Changed to BarcodeScannerScreen()
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -128,7 +129,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
       isLoading = false;
       isScanning = true;
       scannedCode = '';
-      productName = 'butt';
+      productName = '';
     });
   }
 
@@ -185,7 +186,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Barcode Scanner'),
+        title: Text('Machyna Barcode Scanner'),
       ),
       body: Column(
         children: [
